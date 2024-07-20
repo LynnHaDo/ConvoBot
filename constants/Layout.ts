@@ -1,4 +1,4 @@
-const pad = 20;
+const pad = 15;
 
 /**
  * Define layout parameters

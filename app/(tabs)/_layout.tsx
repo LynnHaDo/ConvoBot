@@ -3,6 +3,9 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon'
 
 import { useColorScheme } from 'react-native';
 import { Colors } from '@/constants/Colors';
+import { ThemeProvider } from '@react-navigation/native';
+import { ThemedButton } from '@/components/ThemedButton';
+import { ThemedText } from '@/components/ThemedText';
 
 export default function TabsLayout() {
     const colorScheme = useColorScheme();
@@ -11,7 +14,7 @@ export default function TabsLayout() {
         <Tabs
           screenOptions={{
             tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-            headerShown: false,
+            headerShown: true,
             tabBarLabelStyle: {fontFamily: 'PromptRegular'}
           }}>
 
@@ -33,7 +36,7 @@ export default function TabsLayout() {
               title: 'Chat',
               tabBarIcon: ({ color, focused }) => (
                 <TabBarIcon name={focused ? 'chatbubble-ellipses' : 'chatbubble-ellipses-outline'} color={color} />
-              ),
+              )
             }}
           />
 

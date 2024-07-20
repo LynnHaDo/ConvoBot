@@ -5,10 +5,14 @@ import { makeRequest } from '@/utils/gptUtils'
 
 import { Colors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
+
 import { Feather } from '@expo/vector-icons';
 import { ThemedButton } from '@/components/ThemedButton';
-import { addMessage, getConversation, initConversation } from '@/utils/conversationUtils';
+
+import { addMessage, getConversation, resetConversation } from '@/utils/conversationUtils';
 import { ChatBubble } from '@/components/ChatBubble';
+import { useNavigation } from '@react-navigation/native';
+import { ThemedText } from '@/components/ThemedText';
 
 
 export default function ChatScreen() {
@@ -17,12 +21,25 @@ export default function ChatScreen() {
 
     const [messageText, setMessageText] = useState("");
     const [conversation, setConversation] = useState<any[]>([])
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => 
+            <ThemedButton type="transparent" onPress={() => {
+                setConversation([]);
+                resetConversation();
+            }}>
+                <ThemedText type="danger">Reset</ThemedText>
+            </ThemedButton>
+        })
+    }, [])
 
     /**
      * Initialize conversation with system setup for ChatGPT 
      */
     useEffect(() => {
-        initConversation()
+        resetConversation()
         setConversation([])
     }, [])
 
@@ -103,6 +120,6 @@ const styles = StyleSheet.create({
     },
     flatList: {
         marginHorizontal: 10,
-        marginTop: 40,
+        marginTop: 5,
     }
 })

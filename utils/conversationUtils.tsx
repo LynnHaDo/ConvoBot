@@ -14,3 +14,8 @@ export const initConversation = () => {
 export const addMessage = (msg: any) => {
     conversation.push(msg);
 }
+
+export const resetConversation = () => {
+    conversation = [];
+    initConversation();
+}
