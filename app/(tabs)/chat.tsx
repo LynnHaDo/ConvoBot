@@ -1,4 +1,4 @@
-import { View, StyleSheet, useColorScheme, TextInput, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, useColorScheme, TextInput, KeyboardAvoidingView, FlatList } from 'react-native';
 import { useState, useCallback, useEffect } from 'react';
 
 import { makeRequest } from '@/utils/gptUtils'
@@ -7,7 +7,8 @@ import { Colors } from '@/constants/Colors';
 import { Layout } from '@/constants/Layout';
 import { Feather } from '@expo/vector-icons';
 import { ThemedButton } from '@/components/ThemedButton';
-import { addMessage, initConversation } from '@/utils/conversationUtils';
+import { addMessage, getConversation, initConversation } from '@/utils/conversationUtils';
+import { ChatBubble } from '@/components/ChatBubble';
 
 
 export default function ChatScreen() {
@@ -15,22 +16,36 @@ export default function ChatScreen() {
     const colorTheme = Colors[colorScheme ?? 'light'];
 
     const [messageText, setMessageText] = useState("");
+    const [conversation, setConversation] = useState<any[]>([])
 
+    /**
+     * Initialize conversation with system setup for ChatGPT 
+     */
     useEffect(() => {
         initConversation()
+        setConversation([])
     }, [])
 
     const sendMessage = useCallback(async () => {
+        if (messageText === "") {
+            return;
+        }
+
         try {
             addMessage({
                 role: "user",
                 content: messageText
             });
+            setMessageText("");
+            setConversation([...getConversation()])
             await makeRequest();
-        } catch (error) {
+        } 
+        catch (error) {
             console.log(error);
         }
-        setMessageText("");
+        finally {
+            setConversation([...getConversation()])
+        }
     }, [messageText])
 
     return (
@@ -39,7 +54,18 @@ export default function ChatScreen() {
                         backgroundColor: colorTheme.background}}>
             
                 <View style = {styles.messageContainer}>
+                    <FlatList 
+                        style = {styles.flatList}
+                        data = {conversation}
+                        renderItem={(item) => {
+                            const conversationItem = item.item;
+                            const { role, content } = conversationItem;
 
+                            return role == "system"? null : (
+                                <ChatBubble content={content} 
+                                            type={role}/>
+                            )
+                        }}/>
                 </View>
                 
                 <View style = {styles.inputContainer}>
@@ -74,5 +100,9 @@ const styles = StyleSheet.create({
     textbox: {
         fontFamily: 'PromptRegular',
         flex: 1
+    },
+    flatList: {
+        marginHorizontal: 10,
+        marginTop: 40,
     }
 })
