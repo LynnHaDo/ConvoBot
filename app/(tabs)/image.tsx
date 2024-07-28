@@ -1,24 +1,175 @@
-import { View, StyleSheet, useColorScheme } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { Colors } from '@/constants/Colors';
-import { ThemedText } from '@/components/ThemedText';
-
-export default function ImageScreen() {
+import {
+    View,
+    StyleSheet,
+    useColorScheme,
+    KeyboardAvoidingView,
+    FlatList,
+    Image
+  } from "react-native";
+  import { useState, useCallback, useEffect, useRef } from "react";
+  
+  import { makeImageRequest } from "@/utils/gptUtils";
+  
+  import { Colors } from "@/constants/Colors";
+  import { Layout } from "@/constants/Layout";
+  
+  import AntDesign from '@expo/vector-icons/AntDesign';
+  import { ThemedButton } from "@/components/ThemedButton";
+  
+  import {
+    addMessage,
+    getConversation,
+    resetConversation,
+  } from "@/utils/conversationUtils";
+  import { ChatBubble } from "@/components/ChatBubble";
+  import { useNavigation } from "@react-navigation/native";
+  import { ThemedText } from "@/components/ThemedText";
+  import InputContainer from "@/components/InputContainer";
+  
+  export default function ImageScreen() {
+    const flatList = useRef<FlatList<any> | null>();
     const colorScheme = useColorScheme();
+    const colorTheme = Colors[colorScheme ?? "light"];
+  
+    const [promptText, setPromptText] = useState("");
+    const [conversation, setConversation] = useState<any[]>([]);
+    const [loading, setLoading] = useState(false);
+    const navigation = useNavigation();
+  
+    useEffect(() => {
+      navigation.setOptions({
+        headerRight: () => (
+          <ThemedButton
+            type="transparent"
+            onPress={() => {
+              setConversation([]);
+              resetConversation();
+            }}
+          >
+            <ThemedText type="danger">Reset</ThemedText>
+          </ThemedButton>
+        ),
+      });
+    }, []);
+  
+    /**
+     * Initialize conversation with system setup for ChatGPT
+     */
+    useEffect(() => {
+      resetConversation();
+      setConversation([]);
+    }, []);
+  
+    const sendMessage = useCallback(async () => {
+      if (promptText === "") {
+        return;
+      }
 
+      const text = promptText;
+      const tempConversation = [...conversation, {role: 'user', content: text}]
+
+      try {
+        setLoading(true);
+        setConversation(tempConversation)
+        setPromptText("");
+
+        const responseData = await makeImageRequest(promptText);
+        const urls = responseData.map(i => ({role: 'assistant', content: i.url}));
+        tempConversation.push(...urls);
+        setConversation(tempConversation);
+      } catch (error) {
+        console.log(error);
+        setPromptText(text);
+      } finally {
+        setLoading(false);
+      }
+    }, [promptText]);
+  
     return (
-        <View style={{  ...styles.container, 
-                        backgroundColor: Colors[colorScheme ?? 'light'].background}}>
-        <ThemedText type="title">Image screen</ThemedText>
-        <StatusBar style="auto"></StatusBar>
-        </View>
-    )
-}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior="padding"
+        keyboardVerticalOffset={10}
+      >
+        <View
+          style={{ ...styles.container, backgroundColor: colorTheme.background }}
+        >
+          <View style={styles.messageContainer}>
+            {
+              conversation.length == 0 && !loading &&
+              <View style={styles.nothingContainer}>
+                  <AntDesign name="frowno" size={44} color={colorTheme.inactive} />
+                  <ThemedText style={{color: colorTheme.inactive, marginTop: 15}}>Oops... Nothing to show here.</ThemedText>
+              </View>
+            }
+            {conversation.length > 0 && (
+              <FlatList
+                ref={(ref) => (flatList.current = ref)}
+                onLayout={() => flatList.current?.scrollToEnd()}
+                onContentSizeChange={() => flatList.current?.scrollToEnd()}
+                style={styles.flatList}
+                data={conversation}
+                renderItem={(item) => {
+                  const conversationItem = item.item;
+                  const role: string = conversationItem.role;
+                  const content: string = conversationItem.content;
 
-const styles = StyleSheet.create({
+                  if (content.startsWith("http://") || content.startsWith("https://")) {
+                    return <Image width={256}
+                                  height={256}
+                                  source={{uri: content}}
+                                  style={{marginBottom: 5}}/>
+                  }
+  
+                  return role == "system" ? null : (
+                    <ChatBubble content={content} type={role} />
+                  );
+                }}
+              />
+            )}
+  
+            {loading && (
+              <View style={styles.loadingContainer}>
+                <ChatBubble type="loading" />
+              </View>
+            )}
+          </View>
+          
+          <InputContainer onChangeText={(text: string) => setPromptText(text)}
+                          message={promptText}
+                          sendMessage={sendMessage}
+                          colorTheme={colorTheme}
+                          placeholder={"Send an image prompt..."}/>
+          
+        </View>
+      </KeyboardAvoidingView>
+    );
+  }
+  
+  const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-    }
-})
+      flex: 1,
+    },
+    messageContainer: {
+      flex: 1,
+      padding: Layout.padding,
+    },
+    nothingContainer: {
+      alignSelf: 'center',
+      margin: 'auto',
+      flexDirection: 'column',
+      alignItems: 'center'
+    },
+    flatList: {
+      marginHorizontal: 10,
+      marginTop: 5,
+    },
+    loadingContainer: {
+      position: "absolute",
+      bottom: 0,
+      width: "100%",
+      alignItems: "center",
+      alignSelf: "center",
+    },
+  });
+  

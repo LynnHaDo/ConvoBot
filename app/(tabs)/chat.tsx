@@ -2,18 +2,16 @@ import {
   View,
   StyleSheet,
   useColorScheme,
-  TextInput,
   KeyboardAvoidingView,
   FlatList,
 } from "react-native";
 import { useState, useCallback, useEffect, useRef } from "react";
 
-import { makeRequest } from "@/utils/gptUtils";
+import { makeChatRequest } from "@/utils/gptUtils";
 
 import { Colors } from "@/constants/Colors";
 import { Layout } from "@/constants/Layout";
 
-import { Feather } from "@expo/vector-icons";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { ThemedButton } from "@/components/ThemedButton";
 
@@ -25,6 +23,7 @@ import {
 import { ChatBubble } from "@/components/ChatBubble";
 import { useNavigation } from "@react-navigation/native";
 import { ThemedText } from "@/components/ThemedText";
+import InputContainer from "@/components/InputContainer";
 
 export default function ChatScreen() {
   const flatList = useRef<FlatList<any> | null>();
@@ -65,6 +64,8 @@ export default function ChatScreen() {
       return;
     }
 
+    const text = messageText;
+
     try {
       setLoading(true);
       addMessage({
@@ -73,9 +74,10 @@ export default function ChatScreen() {
       });
       setMessageText("");
       setConversation([...getConversation()]);
-      await makeRequest();
+      await makeChatRequest();
     } catch (error) {
       console.log(error);
+      setMessageText(text);
     } finally {
       setConversation([...getConversation()]);
       setLoading(false);
@@ -123,19 +125,13 @@ export default function ChatScreen() {
             </View>
           )}
         </View>
-
-        <View style={styles.inputContainer}>
-          <TextInput
-            style={styles.textbox}
-            placeholder="Start a conversation..."
-            onChangeText={(text) => setMessageText(text)}
-            value={messageText}
-          />
-
-          <ThemedButton type="fill" onPress={sendMessage}>
-            <Feather name="send" size={24} color={colorTheme.buttonText} />
-          </ThemedButton>
-        </View>
+        
+        <InputContainer onChangeText={(text: string) => setMessageText(text)}
+                        message={messageText}
+                        sendMessage={sendMessage}
+                        colorTheme={colorTheme}
+                        placeholder={"Start a conversation..."}/>
+        
       </View>
     </KeyboardAvoidingView>
   );
@@ -154,14 +150,6 @@ const styles = StyleSheet.create({
     margin: 'auto',
     flexDirection: 'column',
     alignItems: 'center'
-  },
-  inputContainer: {
-    flexDirection: "row",
-    padding: Layout.padding,
-  },
-  textbox: {
-    fontFamily: "PromptRegular",
-    flex: 1,
   },
   flatList: {
     marginHorizontal: 10,

@@ -6,7 +6,7 @@ const openai = new OpenAI({
   apiKey: DevEnvironment.openaiAPIKey,
 });
 
-export const makeRequest = async () => {
+export const makeChatRequest = async () => {
     const response = await openai.chat.completions.create({
         model: "gpt-3.5-turbo",
         messages: getConversation(),
@@ -30,3 +30,19 @@ export const makeRequest = async () => {
 
     throw new Error("The response is in an unsupported format");
 }
+
+export const makeImageRequest = async (prompt: string) => {
+    const image = await openai.images.generate({ 
+        model: "dall-e-2", 
+        prompt: prompt,
+        n: 3,
+        size: '256x256'
+    });
+
+    if (image.data) {
+        return image.data;
+    }
+
+    throw new Error("The response is in an unsupported format");
+}
+
