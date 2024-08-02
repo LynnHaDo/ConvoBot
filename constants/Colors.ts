@@ -50,5 +50,5 @@ export const Colors = {
         text: main__White
     }
   },
-  danger: main__DarkRed
+  danger: main__DarkRed,
 };

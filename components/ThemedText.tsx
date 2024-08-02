@@ -6,7 +6,7 @@ import { Colors } from '@/constants/Colors';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'danger';
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'danger' | 'header' | 'subtitleHeader' ;
 };
 
 export function ThemedText({
@@ -27,6 +27,8 @@ export function ThemedText({
         type === 'subtitle' ? styles.subtitle : undefined,
         type === 'link' ? styles.link : undefined,
         type === 'danger' ? styles.danger : undefined,
+        type === 'header'? styles.header : undefined,
+        type === 'subtitleHeader' ? styles.subtitleHeader : undefined,
         style,
       ]}
       {...rest}
@@ -45,8 +47,17 @@ const styles = StyleSheet.create({
     fontFamily: 'PromptBold',
     lineHeight: 32,
   },
+  header: {
+    fontSize: 17,
+    fontFamily: 'PromptBold',
+    lineHeight: 24,
+  },
   subtitle: {
     fontSize: 20,
+    fontFamily: 'PromptRegular',
+  },
+  subtitleHeader: {
+    fontSize: 16,
     fontFamily: 'PromptRegular'
   },
   description: {

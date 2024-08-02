@@ -17,9 +17,7 @@ import {
   import { ThemedButton } from "@/components/ThemedButton";
   
   import {
-    addMessage,
-    getConversation,
-    resetConversation,
+    resetConversation
   } from "@/utils/conversationUtils";
   import { ChatBubble } from "@/components/ChatBubble";
   import { useNavigation } from "@react-navigation/native";

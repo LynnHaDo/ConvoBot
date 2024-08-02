@@ -51,7 +51,7 @@ export default function TabsLayout() {
           /> 
 
           <Tabs.Screen
-            name="settings"
+            name="settings-navigator"
             options={{
               title: 'Settings',
               tabBarIcon: ({ color, focused }) => (
