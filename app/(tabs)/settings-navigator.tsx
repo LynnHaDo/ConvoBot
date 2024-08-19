@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback } from "react";
 import { setParam } from "@/store/settingsSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Stack = createStackNavigator();
 
@@ -21,13 +22,16 @@ export type DataListParamList = {
 
 export default function SettingsNavigator() {
   const dispatch = useAppDispatch();
-  
-  const personality: string = useAppSelector((state) => state.settings.personality);
+
+  const personality: string = useAppSelector(
+    (state) => state.settings.personality
+  );
 
   const navigate = useNavigation<StackNavigationProp<DataListParamList>>();
 
-  const updateValue = useCallback((key: string, value: any) => {
+  const updateValue = useCallback(async (key: string, value: any) => {
     try {
+      await AsyncStorage.setItem(key, value);
       dispatch(setParam({ key, value }));
       navigate.navigate("SettingsScreen");
     } catch (err) {

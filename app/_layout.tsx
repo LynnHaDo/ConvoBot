@@ -11,6 +11,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import 'react-native-reanimated';
 import { Provider } from 'react-redux';
 import { store } from '@/store/store';
+import StartUpScreen from '@/components/LoadingView';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -44,9 +45,7 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
     <ThemeProvider value = {colorScheme === 'dark'? DarkTheme : DefaultTheme}>
-        <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
-        </Stack>
+        <StartUpScreen />
     </ThemeProvider>
     </Provider>
   );
