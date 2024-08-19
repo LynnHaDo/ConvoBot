@@ -27,6 +27,7 @@ import InputContainer from "@/components/InputContainer";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { useHeaderHeight } from '@react-navigation/elements'
+import { useAppSelector } from "@/store/store";
 
 export default function ChatScreen() {
   const flatList = useRef<FlatList<any> | null>();
@@ -39,6 +40,9 @@ export default function ChatScreen() {
   const navigation = useNavigation();
 
   const headerHeight = useHeaderHeight();
+  
+  /** Model config */
+  const personality: string = useAppSelector((state) => state.settings.personality);
 
   useEffect(() => {
     navigation.setOptions({
@@ -47,22 +51,22 @@ export default function ChatScreen() {
           type="transparent"
           onPress={() => {
             setConversation([]);
-            resetConversation();
+            resetConversation(personality);
           }}
         >
           <Ionicons name="trash-bin-outline" size={24} color={Colors.danger} />
         </ThemedButton>
       ),
     });
-  }, []);
+  }, [personality]);
 
   /**
    * Initialize conversation with system setup for ChatGPT
    */
   useEffect(() => {
-    resetConversation();
+    resetConversation(personality);
     setConversation([]);
-  }, []);
+  }, [personality]);
 
   const sendMessage = useCallback(async () => {
     if (messageText === "") {
@@ -81,7 +85,6 @@ export default function ChatScreen() {
       setConversation([...getConversation()]);
       await makeChatRequest();
     } catch (error) {
-      console.log(error);
       setMessageText(text);
     } finally {
       setConversation([...getConversation()]);
