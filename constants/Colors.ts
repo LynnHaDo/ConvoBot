@@ -11,13 +11,20 @@ const main__DarkYellow = '#F29F05';
 const main__Black = '#0D0D0D';
 const main__White = '#F0F0F2';
 
-const light__Inactive = '#687076';
+const light__Inactive = '#a4a4a4';
 const dark__Inactive = '#9BA1A6';
 
 /**
  * Define colors
  */
 export const Colors = {
+  theme: {
+    yellow: main__LightYellow,
+    blue: main__DarkBlue,
+    black: main__Black,
+    red: main__DarkRed,
+    white: main__White
+  },
   light: {
     text: main__Black,
     background: main__White,

@@ -1,6 +1,7 @@
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
 import { Stack } from "expo-router";
+
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
 import { useColorScheme } from 'react-native';
@@ -15,9 +16,16 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
     const colorScheme = useColorScheme();
     const [loaded] = useFonts({
-        PromptRegular: require('../assets/fonts/Prompt-Regular.ttf'),
-        PromptLight: require('../assets/fonts/Prompt-Light.ttf'),
-        PromptBold: require('../assets/fonts/Prompt-Bold.ttf')
+        WorkSansRegular: require('../assets/fonts/WorkSans-Regular.ttf'),
+        WorkSansLight: require('../assets/fonts/WorkSans-Light.ttf'),
+        WorkSansMedium: require('../assets/fonts/WorkSans-Medium.ttf'),
+        WorkSansSemiBold: require('../assets/fonts/WorkSans-SemiBold.ttf'),
+        WorkSansBold: require('../assets/fonts/WorkSans-Bold.ttf'),
+        'WorkSans-Regular': require('../assets/fonts/WorkSans-Regular.ttf'),
+        'WorkSans-Light': require('../assets/fonts/WorkSans-Light.ttf'),
+        'WorkSans-Medium': require('../assets/fonts/WorkSans-Medium.ttf'),
+        'WorkSans-SemiBold': require('../assets/fonts/WorkSans-SemiBold.ttf'),
+        'WorkSans-Bold': require('../assets/fonts/WorkSans-Bold.ttf')
     })
 
     useEffect(() => {

@@ -8,9 +8,9 @@ import Entypo from '@expo/vector-icons/Entypo';
 
 export interface DataItemProps {
     title: string
-    subTitle: string
-    type: string,
-    onPress: (((event: GestureResponderEvent) => void) & (() => void))
+    subTitle?: string
+    type?: string,
+    onPress?: (((event: GestureResponderEvent) => void) & (() => void))
 }
 
 export default function DataItem({title, subTitle, type, onPress}: DataItemProps) {
@@ -18,11 +18,13 @@ export default function DataItem({title, subTitle, type, onPress}: DataItemProps
     const colorTheme = Colors[colorScheme ?? "light"];
 
     return <TouchableOpacity onPress={onPress}>
-        <View style={{...styles.container, borderColor: colorTheme.inactive}}>
+        <View style={{...styles.container, borderColor: '#cdcdcd'}}>
             <View>
-                <ThemedText type="header" numberOfLines={1}>{title}</ThemedText>
-                <ThemedText type="subtitleHeader" numberOfLines={1}
-                style={{color: colorTheme.inactive}}>{subTitle}</ThemedText>
+                <ThemedText type="heading1" numberOfLines={1}>{title}</ThemedText>
+                {
+                    subTitle && <ThemedText type="subtitleHeader" numberOfLines={1}
+                    style={{color: colorTheme.inactive}}>{subTitle}</ThemedText>
+                }
             </View>
 
             {

@@ -23,6 +23,9 @@ import {
   import { useNavigation } from "@react-navigation/native";
   import { ThemedText } from "@/components/ThemedText";
   import InputContainer from "@/components/InputContainer";
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+import { useHeaderHeight } from '@react-navigation/elements'
   
   export default function ImageScreen() {
     const flatList = useRef<FlatList<any> | null>();
@@ -33,6 +36,8 @@ import {
     const [conversation, setConversation] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const navigation = useNavigation();
+
+    const headerHeight = useHeaderHeight();
   
     useEffect(() => {
       navigation.setOptions({
@@ -44,7 +49,7 @@ import {
               resetConversation();
             }}
           >
-            <ThemedText type="danger">Reset</ThemedText>
+            <Ionicons name="trash-bin-outline" size={24} color={Colors.danger} />
           </ThemedButton>
         ),
       });
@@ -87,7 +92,9 @@ import {
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior="padding"
-        keyboardVerticalOffset={10}
+        keyboardVerticalOffset={
+            headerHeight + 10
+        }
       >
         <View
           style={{ ...styles.container, backgroundColor: colorTheme.background }}

@@ -24,6 +24,9 @@ import { ChatBubble } from "@/components/ChatBubble";
 import { useNavigation } from "@react-navigation/native";
 import { ThemedText } from "@/components/ThemedText";
 import InputContainer from "@/components/InputContainer";
+import Ionicons from "@expo/vector-icons/Ionicons";
+
+import { useHeaderHeight } from '@react-navigation/elements'
 
 export default function ChatScreen() {
   const flatList = useRef<FlatList<any> | null>();
@@ -35,6 +38,8 @@ export default function ChatScreen() {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
+  const headerHeight = useHeaderHeight();
+
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -45,7 +50,7 @@ export default function ChatScreen() {
             resetConversation();
           }}
         >
-          <ThemedText type="danger">Reset</ThemedText>
+          <Ionicons name="trash-bin-outline" size={24} color={Colors.danger} />
         </ThemedButton>
       ),
     });
@@ -88,7 +93,7 @@ export default function ChatScreen() {
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior="padding"
-      keyboardVerticalOffset={10}
+      keyboardVerticalOffset={headerHeight + 10}
     >
       <View
         style={{ ...styles.container, backgroundColor: colorTheme.background }}

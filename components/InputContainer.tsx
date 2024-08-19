@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
       padding: Layout.padding,
     },
     textbox: {
-        fontFamily: "PromptRegular",
+        fontFamily: "WorkSans-Regular",
         flex: 1,
     }
   });

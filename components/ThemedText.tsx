@@ -6,7 +6,7 @@ import { Colors } from '@/constants/Colors';
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
-  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'danger' | 'header' | 'subtitleHeader' ;
+  type?: 'default' | 'title' | 'defaultSemiBold' | 'subtitle' | 'link' | 'danger' | 'header' | 'subtitleHeader' | 'heading1' | 'heading2' ;
 };
 
 export function ThemedText({
@@ -28,6 +28,8 @@ export function ThemedText({
         type === 'link' ? styles.link : undefined,
         type === 'danger' ? styles.danger : undefined,
         type === 'header'? styles.header : undefined,
+        type === 'heading1' ? styles.heading1 : undefined,
+        type === 'heading2' ? styles.heading2 : undefined,
         type === 'subtitleHeader' ? styles.subtitleHeader : undefined,
         style,
       ]}
@@ -40,28 +42,38 @@ const styles = StyleSheet.create({
   default: {
     fontSize: 16,
     lineHeight: 24,
-    fontFamily: 'PromptRegular'
+    fontFamily: 'WorkSans-Regular',
   },
   title: {
     fontSize: 28,
-    fontFamily: 'PromptBold',
+    fontFamily: 'WorkSans-Bold',
     lineHeight: 32,
   },
   header: {
     fontSize: 17,
-    fontFamily: 'PromptBold',
+    fontFamily: 'WorkSans-Bold',
+    lineHeight: 24,
+  },
+  heading1: {
+    fontSize: 17,
+    fontFamily: 'WorkSans-SemiBold',
+    lineHeight: 24,
+  },
+  heading2: {
+    fontSize: 17,
+    fontFamily: 'WorkSans-Medium',
     lineHeight: 24,
   },
   subtitle: {
     fontSize: 20,
-    fontFamily: 'PromptRegular',
+    fontFamily: 'WorkSans-Regular',
   },
   subtitleHeader: {
     fontSize: 16,
-    fontFamily: 'PromptRegular'
+    fontFamily: 'WorkSans-Regular',
   },
   description: {
-    fontFamily: 'PromptLight'
+    fontFamily: 'WorkSans-Light',
   },
   link: {
     lineHeight: 30,
