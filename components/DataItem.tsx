@@ -32,7 +32,7 @@ export default function DataItem({
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <View style={{ ...styles.container, borderColor: "#cdcdcd" }}>
+      <View style={styles.container}>
         <View>
           <ThemedText type="heading1" numberOfLines={1}>
             {title}
@@ -77,5 +77,6 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     borderBottomWidth: 1,
+    borderColor: "#cdcdcd"
   },
 });

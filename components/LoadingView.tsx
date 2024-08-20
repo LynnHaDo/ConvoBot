@@ -14,11 +14,10 @@ const StartUpScreen = () => {
   useEffect(() => {
     const getSettings = async () => {
       try {
-        const personality = await AsyncStorage.getItem("personality");
-
-        if (personality) {
-          dispatch(setParam({ key: "personality", value: personality }));
-        }
+        const modelConfig = await AsyncStorage.multiGet(['personality', 'mood', 'responseSize'])
+        
+        modelConfig.map(([k, v]) => v && dispatch(setParam({key: k, value: v})));
+        
       } catch (error) {
         console.log(error);
       } finally {

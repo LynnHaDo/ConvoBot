@@ -6,11 +6,10 @@ import DataItem from "@/components/DataItem";
 import { Layout } from "@/constants/Layout";
 
 import { useNavigation } from "@react-navigation/native";
-import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 
 import { DataListParamList } from "../(tabs)/settings-navigator";
-import { personalities } from "@/constants/PersonalityConfig";
+import { moods, personalities, responseSizes } from "@/constants/SettingsConfig";
 
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { useAppSelector } from "@/store/store";
@@ -20,7 +19,7 @@ export interface SettingsScreenProps {
 }
 
 export default function SettingsScreen({ title }: SettingsScreenProps) {
-  const personality: string = useAppSelector((state) => state.settings.personality);
+  const {personality, mood, responseSize} = useAppSelector((state) => state.settings);
 
   const colorScheme = useColorScheme();
   const navigation = useNavigation<StackNavigationProp<DataListParamList>>();
@@ -53,16 +52,33 @@ export default function SettingsScreen({ title }: SettingsScreenProps) {
           onPress={() =>
             navigation.navigate("PersonalityListScreen", {
               title: "Personality modes",
-              data: personalities
+              data: personalities,
             })
           }
         />
 
         <DataItem
           title="Mood"
-          subTitle="Change the mood of the model"
+          subTitle={mood}
           type="link"
-          onPress={() => console.log("mood pressed")}
+          onPress={() =>
+            navigation.navigate("MoodListScreen", {
+              title: "Model moods",
+              data: moods,
+            })
+          }
+        />
+
+        <DataItem
+          title="Response size"
+          subTitle={responseSize}
+          type="link"
+          onPress={() =>
+            navigation.navigate("ResponseSizeScreen", {
+              title: "Model response size",
+              data: responseSizes
+            })
+          }
         />
 
         <DataItem

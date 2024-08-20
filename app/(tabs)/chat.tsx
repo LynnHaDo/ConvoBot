@@ -42,7 +42,7 @@ export default function ChatScreen() {
   const headerHeight = useHeaderHeight();
   
   /** Model config */
-  const personality: string = useAppSelector((state) => state.settings.personality);
+  const {personality, mood, responseSize} = useAppSelector((state) => state.settings);
 
   useEffect(() => {
     navigation.setOptions({
@@ -51,22 +51,22 @@ export default function ChatScreen() {
           type="transparent"
           onPress={() => {
             setConversation([]);
-            resetConversation(personality);
+            resetConversation('chat', {personality: personality, mood: mood, responseSize: responseSize});
           }}
         >
           <Ionicons name="trash-bin-outline" size={24} color={Colors.danger} />
         </ThemedButton>
       ),
     });
-  }, [personality]);
+  }, [personality, mood, responseSize]);
 
   /**
    * Initialize conversation with system setup for ChatGPT
    */
   useEffect(() => {
-    resetConversation(personality);
+    resetConversation('chat', {personality: personality, mood: mood, responseSize: responseSize});
     setConversation([]);
-  }, [personality]);
+  }, [personality, mood, responseSize]);
 
   const sendMessage = useCallback(async () => {
     if (messageText === "") {

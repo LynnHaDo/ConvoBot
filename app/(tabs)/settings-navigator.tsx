@@ -6,7 +6,11 @@ import {
 import SettingsScreen from "../(settings)/settings";
 import DataListScreen from "../(settings)/data-list";
 
-import { personalities } from "@/constants/PersonalityConfig";
+import {
+  moods,
+  personalities,
+  responseSizes,
+} from "@/constants/SettingsConfig";
 import { useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback } from "react";
@@ -17,15 +21,19 @@ const Stack = createStackNavigator();
 
 export type DataListParamList = {
   PersonalityListScreen: { title: string; data: any[] } | undefined;
+  MoodListScreen: { title: string; data: any[] } | undefined;
+  ResponseSizeScreen: { title: string; data: any[] } | undefined;
   SettingsScreen: { title?: string } | undefined;
 };
 
 export default function SettingsNavigator() {
   const dispatch = useAppDispatch();
 
-  const personality: string = useAppSelector(
-    (state) => state.settings.personality
-  );
+  const personality = useAppSelector((state) => state.settings.personality);
+
+  const mood = useAppSelector((state) => state.settings.mood);
+
+  const responseSize = useAppSelector((state) => state.settings.responseSize);
 
   const navigate = useNavigation<StackNavigationProp<DataListParamList>>();
 
@@ -49,6 +57,24 @@ export default function SettingsNavigator() {
     />
   );
 
+  const MoodComponent = () => (
+    <DataListScreen
+      title="Select a mood"
+      data={moods}
+      updateValue={(value: any) => updateValue("mood", value)}
+      selectedValue={mood}
+    />
+  );
+
+  const ResponseSizeComponent = () => (
+    <DataListScreen
+      title="Select the length of response"
+      data={responseSizes}
+      updateValue={(value: any) => updateValue("responseSize", value)}
+      selectedValue={responseSize}
+    />
+  );
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -62,6 +88,13 @@ export default function SettingsNavigator() {
       <Stack.Screen
         name="PersonalityListScreen"
         component={PersonalityComponent}
+      />
+
+      <Stack.Screen name="MoodListScreen" component={MoodComponent} />
+
+      <Stack.Screen
+        name="ResponseSizeScreen"
+        component={ResponseSizeComponent}
       />
     </Stack.Navigator>
   );

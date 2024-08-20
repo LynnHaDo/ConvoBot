@@ -46,7 +46,7 @@ import { useHeaderHeight } from '@react-navigation/elements'
             type="transparent"
             onPress={() => {
               setConversation([]);
-              resetConversation();
+              resetConversation('image');
             }}
           >
             <Ionicons name="trash-bin-outline" size={24} color={Colors.danger} />
@@ -59,7 +59,7 @@ import { useHeaderHeight } from '@react-navigation/elements'
      * Initialize conversation with system setup for ChatGPT
      */
     useEffect(() => {
-      resetConversation();
+      resetConversation('image');
       setConversation([]);
     }, []);
   

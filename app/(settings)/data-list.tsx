@@ -7,7 +7,6 @@ import { useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 import { ThemedButton } from "@/components/ThemedButton";
-import { ThemedText } from "@/components/ThemedText";
 import Entypo from "@expo/vector-icons/Entypo";
 
 export interface DataListProps {

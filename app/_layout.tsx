@@ -1,6 +1,5 @@
 import 'react-native-gesture-handler';
 import 'react-native-url-polyfill/auto';
-import { Stack } from "expo-router";
 
 import { useFonts } from 'expo-font';
 import { useEffect } from 'react';
