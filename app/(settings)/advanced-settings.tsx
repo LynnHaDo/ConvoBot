@@ -53,13 +53,13 @@ export default function AdvancedSettingsScreen({
     });
   }, []);
 
-  const getSubtitle = (screen: string): number => {
+  const getCurrentValue = (screen: string): number => {
     if (!advanced[screen]) {
-        return advancedSettings.find((item: any) => item.id === screen)!.default;
+      return advancedSettings.find((item: any) => item.id === screen)!.default;
     }
 
     return advanced[screen];
-  }
+  };
 
   return (
     <View
@@ -68,59 +68,29 @@ export default function AdvancedSettingsScreen({
         backgroundColor: Colors[colorScheme ?? "light"].background,
       }}
     >
-      <DataItem
-        title="Temperature"
-        subTitle={getSubtitle('temperature').toString()}
-        type="link"
-        onPress={() => {
-          navigation.navigate("TemperatureScreen", {
-            ...advancedSettings[0],
-            initialValue: getSubtitle('temperature')
-          });
-        }}
-      />
-      <DataItem
-        title="Top P"
-        subTitle={getSubtitle('top_p').toString()}
-        type="link"
-        onPress={() => {
-          navigation.navigate("TopPScreen", {
-            ...advancedSettings[1],
-            initialValue: getSubtitle('top_p')
-          });
-        }}
-      />
-      <DataItem
-        title="Max Tokens"
-        subTitle={getSubtitle("max_tokens").toString()}
-        type="link"
-        onPress={() => {
-          navigation.navigate("MaxTokensScreen", {
-            ...advancedSettings[2],
-            initialValue: getSubtitle('max_tokens')
-          });
-        }}
-      />
-      <DataItem
-        title="Presence Penalty"
-        subTitle={getSubtitle("presence_penalty").toString()}
-        type="link"
-        onPress={() => {
-          navigation.navigate("PresencePenaltyScreen", {
-            ...advancedSettings[3],
-            initialValue: getSubtitle('presence_penalty')
-          });
-        }}
-      />
-      <DataItem
-        title="FrequencyPenalty"
-        subTitle={getSubtitle("frequency_penalty").toString()}
-        type="link"
-        onPress={() => {
-          navigation.navigate("FrequencyPenaltyScreen", {
-            ...advancedSettings[4],
-            initialValue: getSubtitle('frequency_penalty')
-          });
+      <FlatList
+        data={advancedSettings}
+        renderItem={(optionData) => {
+          const option = optionData.item;
+          const currentValue = getCurrentValue(option.id);
+
+          return (
+            <DataItem
+              title={option.title}
+              subTitle={currentValue.toString()}
+              type="link"
+              onPress={() => {
+                navigation.navigate("InputScreen", {
+                  title: option.title,
+                  description: option.description,
+                  initialValue: currentValue,
+                  min: option.min,
+                  max: option.max,
+                  type: option.type,
+                });
+              }}
+            />
+          );
         }}
       />
     </View>

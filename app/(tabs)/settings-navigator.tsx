@@ -27,19 +27,8 @@ export type DataListParamList = {
   MoodListScreen: { title: string; data: any[] } | undefined;
   ResponseSizeScreen: { title: string; data: any[] } | undefined;
   AdvancedSettingsScreen: { title: string } | undefined;
-  TemperatureScreen:
-    | { description: string; min?: number; max?: number; type?: string; initialValue?: number }
-    | undefined;
-  TopPScreen: { description: string; min?: number; max?: number; initialValue?: number; type?: string } | undefined;
-  MaxTokensScreen:
-    | { description: string; min?: number; max?: number; type?: string; initialValue?: number }
-    | undefined;
-  PresencePenaltyScreen:
-    | { description: string; min?: number; max?: number; type?: string; initialValue?: number }
-    | undefined;
-  FrequencyPenaltyScreen:
-    | { description: string; min?: number; max?: number; type?: string; initialValue?: number }
-    | undefined;
+  InputScreen: { title: string; description: string; min?: number; max?: number; type?: string; initialValue?: number }
+  | undefined;
   SettingsScreen: { title?: string } | undefined;
 };
 
@@ -96,22 +85,7 @@ export default function SettingsNavigator() {
     <AdvancedSettingsScreen title="Advanced settings" />
   );
 
-  const TemperatureComponent = () => (
-    <InputScreen />
-  );
-
-  const TopPComponent = () => (
-    <InputScreen />
-  );
-  const MaxTokensComponent = () => (
-    <InputScreen />
-  );
-  const PresencePenaltyComponent = () => (
-    <InputScreen />
-  );
-  const FrequencyPenaltyComponent = () => (
-    <InputScreen />
-  );
+  const InputComponent = () => <InputScreen />
 
   return (
     <Stack.Navigator>
@@ -140,20 +114,7 @@ export default function SettingsNavigator() {
         component={AdvancedSettingsComponent}
       />
 
-      <Stack.Screen
-        name={`TemperatureScreen`}
-        component={TemperatureComponent}
-      />
-      <Stack.Screen name={`TopPScreen`} component={TopPComponent} />
-      <Stack.Screen name={`MaxTokensScreen`} component={MaxTokensComponent} />
-      <Stack.Screen
-        name={`PresencePenaltyScreen`}
-        component={PresencePenaltyComponent}
-      />
-      <Stack.Screen
-        name={`FrequencyPenaltyScreen`}
-        component={FrequencyPenaltyComponent}
-      />
+      <Stack.Screen name={'InputScreen'} component={InputComponent}/>
     </Stack.Navigator>
   );
 }
