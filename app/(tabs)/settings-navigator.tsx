@@ -10,12 +10,15 @@ import {
   moods,
   personalities,
   responseSizes,
+  advancedSettings,
 } from "@/constants/SettingsConfig";
-import { useNavigation } from "@react-navigation/native";
+import { StackRouter, useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "@/store/store";
 import { useCallback } from "react";
 import { setParam } from "@/store/settingsSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import AdvancedSettingsScreen from "../(settings)/advanced-settings";
+import InputScreen from "../(settings)/input-screen";
 
 const Stack = createStackNavigator();
 
@@ -23,6 +26,20 @@ export type DataListParamList = {
   PersonalityListScreen: { title: string; data: any[] } | undefined;
   MoodListScreen: { title: string; data: any[] } | undefined;
   ResponseSizeScreen: { title: string; data: any[] } | undefined;
+  AdvancedSettingsScreen: { title: string } | undefined;
+  TemperatureScreen:
+    | { description: string; min?: number; max?: number; type?: string; initialValue?: number }
+    | undefined;
+  TopPScreen: { description: string; min?: number; max?: number; initialValue?: number; type?: string } | undefined;
+  MaxTokensScreen:
+    | { description: string; min?: number; max?: number; type?: string; initialValue?: number }
+    | undefined;
+  PresencePenaltyScreen:
+    | { description: string; min?: number; max?: number; type?: string; initialValue?: number }
+    | undefined;
+  FrequencyPenaltyScreen:
+    | { description: string; min?: number; max?: number; type?: string; initialValue?: number }
+    | undefined;
   SettingsScreen: { title?: string } | undefined;
 };
 
@@ -75,6 +92,27 @@ export default function SettingsNavigator() {
     />
   );
 
+  const AdvancedSettingsComponent = () => (
+    <AdvancedSettingsScreen title="Advanced settings" />
+  );
+
+  const TemperatureComponent = () => (
+    <InputScreen />
+  );
+
+  const TopPComponent = () => (
+    <InputScreen />
+  );
+  const MaxTokensComponent = () => (
+    <InputScreen />
+  );
+  const PresencePenaltyComponent = () => (
+    <InputScreen />
+  );
+  const FrequencyPenaltyComponent = () => (
+    <InputScreen />
+  );
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -95,6 +133,26 @@ export default function SettingsNavigator() {
       <Stack.Screen
         name="ResponseSizeScreen"
         component={ResponseSizeComponent}
+      />
+
+      <Stack.Screen
+        name="AdvancedSettingsScreen"
+        component={AdvancedSettingsComponent}
+      />
+
+      <Stack.Screen
+        name={`TemperatureScreen`}
+        component={TemperatureComponent}
+      />
+      <Stack.Screen name={`TopPScreen`} component={TopPComponent} />
+      <Stack.Screen name={`MaxTokensScreen`} component={MaxTokensComponent} />
+      <Stack.Screen
+        name={`PresencePenaltyScreen`}
+        component={PresencePenaltyComponent}
+      />
+      <Stack.Screen
+        name={`FrequencyPenaltyScreen`}
+        component={FrequencyPenaltyComponent}
       />
     </Stack.Navigator>
   );

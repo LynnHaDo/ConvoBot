@@ -14,7 +14,7 @@ import { Feather } from "@expo/vector-icons";
 
 export interface DataItemProps {
   title: string;
-  subTitle?: string;
+  subTitle?: string | number;
   type?: string;
   onPress?: ((event: GestureResponderEvent) => void) & (() => void);
   checked?: boolean

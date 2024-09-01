@@ -82,10 +82,12 @@ export default function SettingsScreen({ title }: SettingsScreenProps) {
         />
 
         <DataItem
-          title="Model"
-          subTitle="Change the model"
+          title="Advanced settings"
+          subTitle="Configure additional settings"
           type="link"
-          onPress={() => console.log("model pressed")}
+          onPress={() => navigation.navigate("AdvancedSettingsScreen", {
+            title: "Advanced settings"
+          })}
         />
         <StatusBar style="auto"></StatusBar>
       </View>

@@ -9,7 +9,8 @@ const settingsSlice = createSlice({
   initialState: {
     personality: "normal",
     mood: 'normal',
-    responseSize: 'medium'
+    responseSize: 'medium',
+    advanced: {} as SettingsState
   },
   reducers: {
     setParam: (state: SettingsState, action: PayloadAction<any>) => {
