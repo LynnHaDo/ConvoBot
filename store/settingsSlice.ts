@@ -20,9 +20,17 @@ const settingsSlice = createSlice({
         state[key] = value;
       }
     },
+
+    setAdvancedParam: (state: SettingsState, action: PayloadAction<any>) => {
+        const { key, value } = action.payload;
+
+        if (state.advanced[key] !== value) {
+            state.advanced[key] = value;
+        }
+    }
   },
 });
 
-export const { setParam } = settingsSlice.actions;
+export const { setParam, setAdvancedParam } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

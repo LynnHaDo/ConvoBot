@@ -27,7 +27,7 @@ export type DataListParamList = {
   MoodListScreen: { title: string; data: any[] } | undefined;
   ResponseSizeScreen: { title: string; data: any[] } | undefined;
   AdvancedSettingsScreen: { title: string } | undefined;
-  InputScreen: { title: string; description: string; min?: number; max?: number; type?: string; initialValue?: number }
+  InputScreen: { id: string; title: string; description: string; min?: number; max?: number; type?: string; initialValue?: number; updateValue?: (value: any) => void }
   | undefined;
   SettingsScreen: { title?: string } | undefined;
 };

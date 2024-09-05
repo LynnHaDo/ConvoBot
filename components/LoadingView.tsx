@@ -1,5 +1,6 @@
 import { Colors } from "@/constants/Colors";
-import { setParam } from "@/store/settingsSlice";
+import { advancedSettings } from "@/constants/SettingsConfig";
+import { setAdvancedParam, setParam } from "@/store/settingsSlice";
 import { useAppDispatch } from "@/store/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
@@ -17,6 +18,14 @@ const StartUpScreen = () => {
         const modelConfig = await AsyncStorage.multiGet(['personality', 'mood', 'responseSize'])
         
         modelConfig.map(([k, v]) => v && dispatch(setParam({key: k, value: v})));
+
+        for (let i = 0; i < advancedSettings.length; i++) {
+            const option = advancedSettings[i]
+            const id = option.id;
+
+            const value = await AsyncStorage.getItem(id);
+            value !== null && dispatch(setAdvancedParam({key: id, value: value}))
+        }
         
       } catch (error) {
         console.log(error);

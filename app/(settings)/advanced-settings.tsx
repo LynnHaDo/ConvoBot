@@ -1,11 +1,4 @@
-import {
-  View,
-  StyleSheet,
-  useColorScheme,
-  Image,
-  FlatList,
-} from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { View, StyleSheet, useColorScheme, FlatList } from "react-native";
 import { Colors } from "@/constants/Colors";
 
 import DataItem from "@/components/DataItem";
@@ -19,11 +12,9 @@ import { advancedSettings } from "@/constants/SettingsConfig";
 import { useAppSelector } from "@/store/store";
 import { useEffect } from "react";
 
-import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedButton } from "@/components/ThemedButton";
 import Entypo from "@expo/vector-icons/Entypo";
 import { Layout } from "@/constants/Layout";
-import InputScreen from "./input-screen";
 
 export interface AdvancedSettingsScreenProps {
   title: string;
@@ -51,7 +42,7 @@ export default function AdvancedSettingsScreen({
         </ThemedButton>
       ),
     });
-  }, []);
+  }, [advanced]);
 
   const getCurrentValue = (screen: string): number => {
     if (!advanced[screen]) {
@@ -81,6 +72,7 @@ export default function AdvancedSettingsScreen({
               type="link"
               onPress={() => {
                 navigation.navigate("InputScreen", {
+                  id: option.id,
                   title: option.title,
                   description: option.description,
                   initialValue: currentValue,

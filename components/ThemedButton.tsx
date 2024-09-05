@@ -15,6 +15,7 @@ export function ThemedButton({
     darkColor,
     type,
     onPress,
+    disabled,
     ...rest
 }: ThemedButtonProps) {
     const bgColor = useThemeColor({light: lightColor, dark: darkColor}, 'buttonBackground');
@@ -32,6 +33,7 @@ export function ThemedButton({
             type === 'transparent' ? { backgroundColor: 'transparent'} : undefined,
             style
          ]}
+         disabled = {disabled}
          onPress = {onPress}
          {...rest}
         />
