@@ -10,7 +10,6 @@ import {
   moods,
   personalities,
   responseSizes,
-  advancedSettings,
 } from "@/constants/SettingsConfig";
 import { StackRouter, useNavigation } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "@/store/store";

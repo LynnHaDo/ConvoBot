@@ -13,7 +13,7 @@ import { setAdvancedParam } from "@/store/settingsSlice";
 
 import { RouteProp } from "@react-navigation/native";
 import { AntDesign } from "@expo/vector-icons";
-import { useAppDispatch } from "@/store/store";
+import { useAppDispatch, useAppSelector } from "@/store/store";
 
 const InputScreen = () => {
   const navigation = useNavigation<StackNavigationProp<DataListParamList>>();
@@ -29,7 +29,7 @@ const InputScreen = () => {
     };
   }> = useRoute();
 
-  const { id, title, description, min, max, type, initialValue } = route.params;
+  const { id, title, description, initialValue, min, max, type } = route.params;
 
   const [value, setValue] = useState(`${initialValue}`);
   const [errorText, setErrorText] = useState("");
@@ -37,15 +37,21 @@ const InputScreen = () => {
 
   const dispatch = useAppDispatch();
 
-  const updateValue = useCallback(async (value: any) => {
+  const updateValue = async () => {
+    if (value === '' || saveDisabled) {
+        return;
+    }
+
+    const val = value;
+
     try {
       await AsyncStorage.setItem(id, value);
       dispatch(setAdvancedParam({ id, value }));
       navigation.navigate("AdvancedSettingsScreen");
     } catch (err) {
-      console.log(err);
+      setValue(val)
     }
-  }, []);
+  };
 
   useEffect(() => {
     navigation.setOptions({
@@ -65,14 +71,14 @@ const InputScreen = () => {
           type="transparent"
           disabled={saveDisabled}
           onPress={() => {
-            updateValue(value);
+            updateValue();
           }}
         >
           <AntDesign name="save" size={24} color="black" />
         </ThemedButton>
       ),
     });
-  }, [saveDisabled]);
+  }, [saveDisabled, value]);
 
   const getPlaceholder = () => {
     if (min != null && max != null) {
@@ -83,7 +89,7 @@ const InputScreen = () => {
 
   const onTextChanged = (text: any) => {
     setValue(text);
-
+    console.log(`Text is: ${text}`);
     let error: string | undefined = "";
     let disabled: boolean | undefined = false;
 
@@ -92,8 +98,10 @@ const InputScreen = () => {
       disabled = true;
     }
 
+    let textNum = Number.parseFloat(text);
+
     if (type === "number" || type === "integer") {
-      if (isNaN(text)) {
+      if (isNaN(textNum)) {
         error = "Input is not a number.";
         disabled = true;
       }
@@ -101,13 +109,13 @@ const InputScreen = () => {
       if (
         max !== undefined &&
         min !== undefined &&
-        (text < min || text > max)
+        (textNum < min || textNum > max)
       ) {
         error = "Value out of bounds.";
         disabled = true;
       }
 
-      if (type === "integer" && text % 1 !== 0) {
+      if (type === "integer" && textNum % 1 !== 0) {
         error = "Input is not an integer.";
         disabled = true;
       }

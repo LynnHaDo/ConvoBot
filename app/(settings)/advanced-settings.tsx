@@ -10,7 +10,7 @@ import { DataListParamList } from "../(tabs)/settings-navigator";
 import { advancedSettings } from "@/constants/SettingsConfig";
 
 import { useAppSelector } from "@/store/store";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { ThemedButton } from "@/components/ThemedButton";
 import Entypo from "@expo/vector-icons/Entypo";
@@ -23,7 +23,7 @@ export interface AdvancedSettingsScreenProps {
 export default function AdvancedSettingsScreen({
   title,
 }: AdvancedSettingsScreenProps) {
-  const advanced = useAppSelector((state) => state.settings.advanced);
+  const { advanced } = useAppSelector((state) => state.settings);
 
   const colorScheme = useColorScheme();
   const navigation = useNavigation<StackNavigationProp<DataListParamList>>();
@@ -45,10 +45,10 @@ export default function AdvancedSettingsScreen({
   }, [advanced]);
 
   const getCurrentValue = (screen: string): number => {
-    if (!advanced[screen]) {
+    console.log(advanced)
+    if (advanced[screen] == null || advanced[screen] == undefined) {
       return advancedSettings.find((item: any) => item.id === screen)!.default;
     }
-
     return advanced[screen];
   };
 

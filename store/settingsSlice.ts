@@ -4,13 +4,15 @@ export interface SettingsState {
     [key: string]: any
 }
 
+const advancedState: SettingsState = {}
+
 const settingsSlice = createSlice({
   name: "settings",
   initialState: {
     personality: "normal",
     mood: 'normal',
     responseSize: 'medium',
-    advanced: {} as SettingsState
+    advanced: advancedState
   },
   reducers: {
     setParam: (state: SettingsState, action: PayloadAction<any>) => {
@@ -22,11 +24,9 @@ const settingsSlice = createSlice({
     },
 
     setAdvancedParam: (state: SettingsState, action: PayloadAction<any>) => {
-        const { key, value } = action.payload;
-
-        if (state.advanced[key] !== value) {
-            state.advanced[key] = value;
-        }
+        const { id, value } = action.payload;
+        
+        state.advanced[id] = value;
     }
   },
 });

@@ -5,7 +5,7 @@ import {
   KeyboardAvoidingView,
   FlatList,
 } from "react-native";
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useCallback, useEffect, useRef, useMemo } from "react";
 
 import { makeChatRequest } from "@/utils/gptUtils";
 
@@ -28,6 +28,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { useHeaderHeight } from '@react-navigation/elements'
 import { useAppSelector } from "@/store/store";
+import { advancedSettings } from "@/constants/SettingsConfig";
 
 export default function ChatScreen() {
   const flatList = useRef<FlatList<any> | null>();
@@ -42,7 +43,32 @@ export default function ChatScreen() {
   const headerHeight = useHeaderHeight();
   
   /** Model config */
-  const {personality, mood, responseSize} = useAppSelector((state) => state.settings);
+  const {personality, mood, responseSize, advanced} = useAppSelector((state) => state.settings);
+  
+  /** Parse chat options before inputting to the model */
+  const chatOptions = useMemo(() => {
+    const options: {[key: string]: number} = {};
+
+    for (let i = 0; i < advancedSettings.length; i++) {
+        const option = advancedSettings[i];
+        const id = option.id;
+
+        let value = advanced[id];
+        if (value == undefined || value == null) {
+            continue;
+        }
+
+        if (option.type === 'number') {
+            value = parseFloat(value)
+        } else if (option.type === 'integer') {
+            value = parseInt(value)
+        }
+
+        options[id] = value;
+    }
+
+    return options;
+  }, [advancedSettings, advanced])
 
   useEffect(() => {
     navigation.setOptions({
@@ -83,14 +109,14 @@ export default function ChatScreen() {
       });
       setMessageText("");
       setConversation([...getConversation()]);
-      await makeChatRequest();
+      await makeChatRequest(chatOptions);
     } catch (error) {
       setMessageText(text);
     } finally {
       setConversation([...getConversation()]);
       setLoading(false);
     }
-  }, [messageText]);
+  }, [messageText, chatOptions]);
 
   return (
     <KeyboardAvoidingView
