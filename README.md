@@ -4,6 +4,30 @@ Social media app with integrated ChatGPT and DALL-E
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
+## Overview
+
+### Android (Pixel 5 | Android 12 | arm64)
+
+<div>
+    <a href="https://www.loom.com/share/0251287798f547528f06437493ef136b">
+      <p>ConvoBot - Android - Watch Video</p>
+    </a>
+    <a href="https://www.loom.com/share/0251287798f547528f06437493ef136b">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/0251287798f547528f06437493ef136b-ca79015b6fa1741f-full-play.gif">
+    </a>
+</div>
+
+### iOS (iPhone 15 Pro | iOS 17.2)
+
+<div>
+    <a href="https://www.loom.com/share/2429e16e59c1463e8342e0dd21b4bee4">
+      <p>ConvoBot - iPhone - Watch Video</p>
+    </a>
+    <a href="https://www.loom.com/share/2429e16e59c1463e8342e0dd21b4bee4">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/2429e16e59c1463e8342e0dd21b4bee4-324cc26419a33110-full-play.gif">
+    </a>
+  </div>
+
 ## Features
 
 - [x] Conversation set up with Chat-GPT
