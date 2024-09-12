@@ -77,7 +77,7 @@ import { useHeaderHeight } from '@react-navigation/elements'
         setPromptText("");
 
         const responseData = await makeImageRequest(promptText);
-        const urls = responseData.map(i => ({role: 'assistant', content: i.url}));
+        const urls = responseData.map((i: any) => ({role: 'assistant', content: i.url}));
         tempConversation.push(...urls);
         setConversation(tempConversation);
       } catch (error) {
