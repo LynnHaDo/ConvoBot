@@ -8,7 +8,8 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 - [x] Conversation set up with Chat-GPT
 - [x] Image generation set up with DALL-E
-- [ ] Settings for user to edit the configurations of the models (example: temperature, number of images generated per request)
+- [x] Settings for user to edit the configurations of the models (example: temperature, number of images generated per request)
+- [x] Make calls to the server API hosted in Heroku
 
 ## Get started
 
